@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { FC, ReactNode } from "react"
-import { NavBar } from "../ui"
+import { NavBar, SideMenu } from "../ui"
 
 interface IProps {
   title: string
@@ -22,7 +22,7 @@ export const ShopLayout: FC<IProps> = ({ children ,pageDescription, title, image
       <nav>
         <NavBar />
       </nav>
-
+      <SideMenu />
       <main style={{
         margin: "80px auto",
         maxWidth: "1440px",
