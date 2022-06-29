@@ -1,12 +1,12 @@
 import Head from "next/head"
-import { FC } from "react"
+import { FC, ReactNode } from "react"
 import { NavBar } from "../ui"
 
 interface IProps {
   title: string
   pageDescription: string
   imageFullUrl?: string
-  children: JSX.Element | JSX.Element[]
+  children: ReactNode | ReactNode[]
 }
 
 export const ShopLayout: FC<IProps> = ({ children ,pageDescription, title, imageFullUrl }) => {
