@@ -1,5 +1,6 @@
 import Head from "next/head"
 import { FC } from "react"
+import { NavBar } from "../ui"
 
 interface IProps {
   title: string
@@ -8,7 +9,7 @@ interface IProps {
   children: JSX.Element | JSX.Element[]
 }
 
-const ShopLayout: FC<IProps> = ({ children ,pageDescription, title, imageFullUrl }) => {
+export const ShopLayout: FC<IProps> = ({ children ,pageDescription, title, imageFullUrl }) => {
   return (
     <>
       <Head>
@@ -19,7 +20,7 @@ const ShopLayout: FC<IProps> = ({ children ,pageDescription, title, imageFullUrl
         { imageFullUrl && <meta property="og:image" content={imageFullUrl} /> }
       </Head>
       <nav>
-
+        <NavBar />
       </nav>
 
       <main style={{

@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import type { NextPage } from 'next'
-import ShopLayout from '../components/layouts/ShopLayout'
+import { ShopLayout } from '../components/layouts'
 
 const Home: NextPage = () => {
   return (
