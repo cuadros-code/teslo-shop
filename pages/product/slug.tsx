@@ -1,5 +1,6 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import ShopLayout from 'components/layouts/ShopLayout';
+import { ProductSlide } from 'components/products';
 import { initialData } from 'database/products';
 
 const product = initialData.products[0];
@@ -13,7 +14,7 @@ export const ProductPage = () => {
       <Grid container spacing={3}>
         
         <Grid item xs={12} sm={7}>
-
+          <ProductSlide images={product.images} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Box sx={{ mt:1 }} className='fadeIn' display='flex' flexDirection='column' >
