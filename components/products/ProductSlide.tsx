@@ -22,6 +22,7 @@ export const ProductSlide: FC<IProp> = ({ images }) => {
               <div style={{
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: 'cover',
+                borderRadius: '5px',
               }}>
               </div>
             </div>
