@@ -9,12 +9,12 @@ const productSchema = new Schema({
   images: [{ type: String }],
   inStock: {
     type: Number,
-    require: true,
+    required: true,
     default: 0,
   },
   price: {
     type: Number,
-    require: true,
+    required: true,
     default: 0,
   },
   sizes: [
@@ -28,7 +28,7 @@ const productSchema = new Schema({
   ],
   slug: {
     type: String,
-    require: true,
+    required: true,
     unique: true,
   },
   tags: [{
@@ -45,14 +45,14 @@ const productSchema = new Schema({
       message: '{VALUES} invalid type',
     }
   },
-  gende: {
+  gender: {
     type: String,
     enum: {
       values: ['men', 'women', 'kid', 'unisex'],
       message: '{VALUES} invalid gender',
     }
   },
-}, {
+},{
   timestamps: true,
 })
 
