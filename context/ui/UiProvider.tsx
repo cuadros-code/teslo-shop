@@ -14,13 +14,18 @@ export const UiProvider = ({children}: {children: React.ReactNode}) => {
 
   const [state, dispatch] = useReducer(uiReducer, UI_STATE_INITIAL)
 
- return (
-   <UiContext.Provider 
-    value={{
-     ...state,
-    }}
-   >
-     {children}
-   </UiContext.Provider>
- )
+  const toggleMenu = () => {
+    dispatch({ type: '[ui] - ToggleMenu' })
+  }
+
+  return (
+    <UiContext.Provider 
+      value={{
+        ...state,
+        toggleMenu,
+      }}
+    >
+      {children}
+    </UiContext.Provider>
+  )
 }

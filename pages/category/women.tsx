@@ -7,7 +7,7 @@ import { Loading } from 'components/ui'
 
 const KidPage: NextPage = () => {
 
-  const { products, error, isLoading } = useProducts('/products?gender=women')
+  const { data, error, isLoading } = useProducts('/products?gender=women')
 
   return (
     <ShopLayout title={'Teslo - Women'} pageDescription={'women page'}>
@@ -16,7 +16,7 @@ const KidPage: NextPage = () => {
       {
         isLoading 
           ? <Loading />
-          : <ProductList products={products} />
+          : <ProductList products={data?.products} />
       }
     </ShopLayout>
   )

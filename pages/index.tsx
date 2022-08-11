@@ -7,7 +7,7 @@ import { Loading } from '../components/ui';
 
 const Home: NextPage = () => {
 
-  const { products, error, isLoading } = useProducts('/products')
+  const { data, error, isLoading } = useProducts('/products')
 
   return (
     <ShopLayout title={'Teslo - Home'} pageDescription={''}>
@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       {
         isLoading 
           ? <Loading />
-          : <ProductList products={products} />
+          : <ProductList products={data?.products ?? []} />
       }
     </ShopLayout>
   )

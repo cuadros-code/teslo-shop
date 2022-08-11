@@ -1,12 +1,20 @@
-import { Box, Button, Chip, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import ShopLayout from 'components/layouts/ShopLayout';
 import { ProductSlide, SizeSelector } from 'components/products';
 import { ItemCounter } from 'components/ui';
-import { initialData } from 'database/products';
+import { IProduct } from '../../interfaces/products';
+import { GetStaticPaths } from 'next'
+import { GetStaticProps } from 'next'
+import { getAllProductSlug } from 'database/dbProducts';
+import { getProductBySlug } from 'database/dbProducts';
+// import { GetServerSideProps } from 'next'
 
-const product = initialData.products[0];
+interface Props {
+  product: IProduct;
+}
 
-export const ProductPage = () => {
+export const ProductPage = ({ product }: Props) => {
+
   return (
     <ShopLayout
       title={product.title}
@@ -49,4 +57,66 @@ export const ProductPage = () => {
     </ShopLayout>
   )
 }
+
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  
+//   const { slug } = ctx.query;
+
+//   const product = await getProductBySlog(`${slug}`);
+
+//   if (!product) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       }
+//     }
+//   }
+
+//   return {
+//     props: {
+//       product
+//     }
+//   }
+// }
+
+
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+  
+  const slugs = await getAllProductSlug();
+  
+  return {
+    paths: slugs.map(slug => ({ 
+      params: { 
+        slug: slug.slug
+      } 
+    })),
+    fallback: "blocking"
+  }
+}
+
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+
+  const { slug } = ctx.params as { slug: string };
+
+  const product = await getProductBySlug(`${slug}`);
+
+  if (!product) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {
+      product
+    },
+    revalidate: 86400
+  }
+}
+
 export default ProductPage
