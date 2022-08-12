@@ -20,3 +20,20 @@ export const getAllProductSlug = async (): Promise<ProductSlug[]> => {
     await disconnect();
     return slugs
 }
+
+export const searchProduct = async ( query: string ): Promise<IProduct[]> => {
+    await connect();
+    const products = await Product.find({
+            $text: { $search: query.toString().toLowerCase() }
+        }).lean();
+    await disconnect();
+    return JSON.parse(JSON.stringify(products));
+}
+
+
+export const getAllProducts = async (): Promise<IProduct[]> => {
+    await connect()
+    const products = await Product.find().lean();
+    await disconnect();
+    return JSON.parse(JSON.stringify(products));
+}
