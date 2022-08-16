@@ -1,13 +1,14 @@
+import { FC } from "react"
 import { Box, Button } from "@mui/material"
 import { ISizes } from "interfaces"
-import { FC } from "react"
 
 interface IProps {
-  sizes: ISizes[]
-  selectedSize?: ISizes
+  sizes         : ISizes[]
+  selectedSize? : ISizes
+  onSelectSize  : (size: ISizes) => void;
 }
 
-export const SizeSelector: FC<IProps> = ({ selectedSize, sizes }) => {
+export const SizeSelector: FC<IProps> = ({ selectedSize, sizes, onSelectSize }) => {
   return (
     <Box>
       {
@@ -16,6 +17,7 @@ export const SizeSelector: FC<IProps> = ({ selectedSize, sizes }) => {
             key={name}
             size='small'
             color={selectedSize === name ? 'primary' : 'info'}
+            onClick={() => onSelectSize(name)}
           >
             { name }
           </Button>
