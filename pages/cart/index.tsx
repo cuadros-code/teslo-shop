@@ -10,7 +10,7 @@ export const CartPage = () => {
       pageDescription='Carrito de compras'
     >
       <Typography variant='h1' component='h1'>Carrito</Typography>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={7}>
           <CartList editable />
         </Grid> 

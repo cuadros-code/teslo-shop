@@ -1,33 +1,42 @@
-import { FC } from 'react'
-import { CardActionArea, CardMedia, Grid, Link, Box, Typography, Button } from '@mui/material';
-import { initialData } from '../../database/products';
+import { FC, useContext, useEffect, useState } from 'react'
 import NextLink from 'next/link'
+import { CardActionArea, CardMedia, Grid, Link, Box, Typography, Button } from '@mui/material';
 import { ItemCounter } from 'components/ui';
+import { CartContext } from 'context/cart/CartContext';
+import { ICartProduct } from '../../interfaces/cart';
 
 interface IProps {
   editable: boolean
 }
 
-const productInCard = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-]
-
 export const CartList: FC<IProps> = ({ editable }) => {
 
+  const [isRender, setIsRender] = useState(false)
+  const { cart, updateCartQuantity, deleteCartProduct } = useContext(CartContext)
+
+  useEffect(() => {
+    setIsRender(true)
+    return () => setIsRender(false)
+  }, [])
+  
+
+  const onNewQuantityValue = ( product: ICartProduct, newQuantity: number ) => {
+    product.quantity = newQuantity;
+    updateCartQuantity(product)
+  }
+  
   return (
     <>
       {
-        productInCard.map((product, index) => {
+        isRender && cart.map((product, index) => {
           return (
-            <Grid container spacing={2} key={product.slug} sx={{ mb:1 }}>
+            <Grid container spacing={2} key={index} sx={{ mb:1 }}>
               <Grid item xs={3}>
-                <NextLink href={`/product/slug`} passHref >
+                <NextLink href={`/product/${product.slug}`} passHref >
                   <Link>
                     <CardActionArea>
                       <CardMedia 
-                        image={`/products/${product.images[0]}`}
+                        image={`/products/${product.images}`}
                         component="img"
                         sx={{ borderRadius: '5px' }}
                       />
@@ -38,12 +47,16 @@ export const CartList: FC<IProps> = ({ editable }) => {
               <Grid item xs={7}>
                 <Box display='flex' flexDirection='column' >
                   <Typography variant='body1' >{product.title}</Typography>
-                  <Typography variant='body1' >Talla: <strong>M</strong></Typography>
+                  <Typography variant='body1' >Talla: <strong>{product?.size}</strong></Typography>
 
                   {
                     editable 
-                      ? <ItemCounter />
-                      : <Typography variant='body1' >Cantidad: <strong>1</strong></Typography>
+                      ? <ItemCounter
+                          maxValue={ 5 }
+                          currentValue={product.quantity}
+                          updatedQuantity={ (value) => onNewQuantityValue(product, value) }
+                        />
+                      : <Typography variant='body1' >Cantidad: <strong>{product.quantity}</strong></Typography>
                   }
                 </Box>
               </Grid>
@@ -51,7 +64,11 @@ export const CartList: FC<IProps> = ({ editable }) => {
                 <Typography variant='subtitle1' >${product.price}</Typography>
                 {
                   editable &&
-                  <Button variant='text' color='secondary'>
+                  <Button 
+                    variant='text' 
+                    color='secondary'
+                    onClick={() => deleteCartProduct(product)}
+                  >
                     Eliminar
                   </Button>
                 }

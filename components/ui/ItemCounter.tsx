@@ -11,7 +11,7 @@ interface IProps {
 export const ItemCounter: FC<IProps> = ({ currentValue, maxValue, updatedQuantity }) => {
 
   const subtractQuantity = () => {
-    if( currentValue <= 0) return
+    if( currentValue <= 1) return
     updatedQuantity(currentValue - 1)
   }
 
