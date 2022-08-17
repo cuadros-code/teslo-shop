@@ -2,7 +2,6 @@ import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/
 import { CartList, OrdenSummary } from 'components/cart';
 import ShopLayout from '../../components/layouts/ShopLayout';
 
-
 export const CartPage = () => {
   return (
     <ShopLayout
@@ -10,7 +9,7 @@ export const CartPage = () => {
       pageDescription='Carrito de compras'
     >
       <Typography variant='h1' component='h1'>Carrito</Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} mt={2}>
         <Grid item xs={12} sm={7}>
           <CartList editable />
         </Grid> 

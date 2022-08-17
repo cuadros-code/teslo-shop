@@ -42,7 +42,7 @@ export const ProductPage = ({ product }: Props) => {
   const onAddToCart = () => {
     if( !tempCartProduct.size ) return;
     addProductToCart(tempCartProduct);
-    // router.push('/cart')
+    router.push('/cart')
   }
 
   return (

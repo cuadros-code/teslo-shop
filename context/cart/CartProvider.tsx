@@ -6,10 +6,18 @@ import Cookie from 'js-cookie'
 
 export interface CartState {
   cart: ICartProduct[];
+  numberOfItems: number;
+  subTotal: number;
+  tax: number;
+  total: number;
 }
 
 const CART_STATE_INITIAL: CartState = {
-  cart: Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : []
+  cart: Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [],
+  numberOfItems: 0,
+  subTotal: 0,
+  tax: 0,
+  total: 0,
 }
 
 export const CartProvider = ({children}: {children: React.ReactNode}) => {
@@ -18,6 +26,25 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
 
   useEffect(() => {
     Cookie.set('cart', JSON.stringify(state.cart))
+  }, [state.cart])
+
+  useEffect(() => {
+    const numberOfItems = state.cart.reduce( (acc, el) =>  el.quantity + acc , 0)
+    const subTotal = state.cart.reduce( (acc, el) =>  (el.price * el.quantity) + acc , 0)
+    const taxRate = 0.15
+
+    const orderSummary = {
+      numberOfItems,
+      subTotal,
+      tax: subTotal * taxRate,
+      total: subTotal * ( taxRate + 1 )
+    }
+
+    dispatch({
+      type: '[CART] - Update order summary',
+      payload: orderSummary
+    })
+
   }, [state.cart])
 
   const addProductToCart = ( itemproduct: ICartProduct) => {
