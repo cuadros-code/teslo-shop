@@ -2,6 +2,7 @@ import { db } from 'database';
 import { User } from 'model/User';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from 'bcryptjs';
+import { signToken } from 'utils/jwt';
 
 type Data = 
   | { message: string }
@@ -43,11 +44,13 @@ async function loginUser(req: NextApiRequest, res: NextApiResponse<Data>) {
       })
     }
 
-    const { name, role } = user;
+    const { _id, name, role } = user;
+
+    const token = signToken( _id, email )
 
     return res.status(200).json({ 
       message: 'OK',
-      token: '',
+      token: token,
       user: {
         email,
         name,
