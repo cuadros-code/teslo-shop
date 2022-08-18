@@ -1,6 +1,7 @@
 import { db } from 'database'
-import { initialData } from 'database/products'
+import { initialData } from 'database/seed-data'
 import { Product } from 'model'
+import { User } from 'model/User'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = {
@@ -15,6 +16,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse<D
     }
 
     await db.connect();
+
+    await User.deleteMany();
+    await User.insertMany(initialData.users)
+
     await Product.deleteMany();
     await Product.insertMany(initialData.products)
     res.status(200).json({ message: 'OK' })
