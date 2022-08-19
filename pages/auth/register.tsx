@@ -1,40 +1,43 @@
-import { ErrorOutline } from '@mui/icons-material';
-import { Box, Grid, Typography, TextField, Button, Link, Chip } from '@mui/material';
-import { tesloApi } from 'api';
+import { useContext, useState } from 'react'
+import { ErrorOutline } from '@mui/icons-material'
+import { Box, Grid, Typography, TextField, Button, Link, Chip } from '@mui/material'
 import { AuthLayout } from 'components/layouts'
+import { AuthContext } from 'context/auth/AuthContext'
 import NextLink from 'next/link'
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { isEmail } from 'utils/validations';
+import { useRouter } from 'next/router'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { isEmail } from 'utils/validations'
 
 type FormData = {
-  name: string;
-  email: string;
-  password: string;
-};
+  name    : string
+  email   : string
+  password: string
+}
 
 const RegisterPage = () => {
 
-  const [showErr, setShowErr] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const router = useRouter()
+  const [showErr, setShowErr] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const { registerUser } = useContext(AuthContext)
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
 
   const onRegisterUser: SubmitHandler<FormData> = async ({ name, email, password }) => {
-    setShowErr(false);
-    try {
-      const { data } = await tesloApi.post('/user/register', { name, email, password });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      setShowErr(true);
-      setTimeout(() => {
-        setShowErr(false);
-      }, 3000);
+    const { hasError, message } = await registerUser(name, email, password)
+
+    if( hasError ) {
+      setShowErr(true)
+      setErrorMessage(message || '')
+      setTimeout(() => setShowErr(false), 3000)
+      return
     }
+
+    router.replace('/')
   }
 
   return (
     <AuthLayout
-      title='Iniciar sesión'
+      title='Crear cuenta'
     >
       <form onSubmit={handleSubmit(onRegisterUser)} noValidate>
         <Box sx={{ width: 350, padding: '10px 20px' }}>
@@ -43,7 +46,7 @@ const RegisterPage = () => {
             <Grid item xs={12}>
               <Typography variant='h1' component='h1' >Registrarse</Typography>
               <Chip 
-                label='Credeciales incorrectas'
+                label={errorMessage}
                 color='error'
                 icon={<ErrorOutline />}
                 sx={{ display: showErr ? 'flex' : 'none' }}
