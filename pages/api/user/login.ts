@@ -34,13 +34,13 @@ async function loginUser(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     if(!user){
       return res.status(400).json({
-        message: 'Correo o Contraseña no válidos - Email'
+        message: 'Correo o Contraseña no válidos'
       })
     }
 
     if( !bcrypt.compareSync(password, user.password!) ){
       return res.status(400).json({
-        message: 'Correo o Contraseña no válidos - Password'
+        message: 'Correo o Contraseña no válidos'
       })
     }
 
@@ -59,6 +59,7 @@ async function loginUser(req: NextApiRequest, res: NextApiResponse<Data>) {
     });
 
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: 'Internal Server Error'
     })

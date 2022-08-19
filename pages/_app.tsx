@@ -4,6 +4,7 @@ import { lightTheme } from 'themes';
 import { SWRConfig } from 'swr'
 import '../styles/globals.css'
 import { UiProvider, CartProvider } from 'context';
+import { AuthProvider } from '../context/auth/AuthProvider';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,14 +13,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
       }}
     >
-      <ThemeProvider theme={lightTheme}>
-        <UiProvider>
-          <CartProvider>
-            <CssBaseline />
-            <Component {...pageProps} />
-          </CartProvider>
-        </UiProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <UiProvider>
+              <ThemeProvider theme={lightTheme}>
+                <CssBaseline />
+                <Component {...pageProps} />
+              </ThemeProvider>
+          </UiProvider>
+        </CartProvider>
+      </AuthProvider>
     </SWRConfig>
   )
 }
