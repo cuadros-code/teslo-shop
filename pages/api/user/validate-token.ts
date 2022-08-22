@@ -42,9 +42,11 @@ async function validateToken(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     const { _id, name, role, email } = user;
 
+    const newToken = await signToken( _id, email );
+
     return res.status(200).json({ 
       message: 'OK',
-      token: signToken( _id, email ),
+      token: newToken,
       user: {
         email,
         name,
@@ -53,6 +55,7 @@ async function validateToken(req: NextApiRequest, res: NextApiResponse<Data>) {
     });
 
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: 'Token de autorización no es válido'
     })

@@ -1,15 +1,16 @@
-import { ICartProduct } from 'interfaces/cart';
-import React, { useEffect, useReducer } from 'react';
-import { CartContext } from './CartContext';
-import { cartReducer } from './cartReducer';
+import { ICartProduct } from 'interfaces/cart'
+import React, { useEffect, useReducer } from 'react'
+import { CartContext } from './CartContext'
+import { cartReducer } from './cartReducer'
 import Cookie from 'js-cookie'
 
 export interface CartState {
-  cart: ICartProduct[];
-  numberOfItems: number;
-  subTotal: number;
-  tax: number;
-  total: number;
+  isLoaded: boolean
+  cart: ICartProduct[]
+  numberOfItems: number
+  subTotal: number
+  tax: number
+  total: number
 }
 
 const CART_STATE_INITIAL: CartState = {
@@ -18,6 +19,7 @@ const CART_STATE_INITIAL: CartState = {
   subTotal: 0,
   tax: 0,
   total: 0,
+  isLoaded: false,
 }
 
 export const CartProvider = ({children}: {children: React.ReactNode}) => {

@@ -1,36 +1,25 @@
-import jwt from 'jsonwebtoken'
+import * as jwt from 'jose'
 
-export const signToken = ( _id: string, email: string ) => {
+export const signToken = async ( _id: string, email: string ) => {
 
   if( !process.env.JWT_SECRET_SEED ){
     throw new Error("secret no found")
   }
-
-  return jwt.sign(
-    // Payload
-    { _id, email },
-    // Seed
-    process.env.JWT_SECRET_SEED,
-    // Options
-    { expiresIn: '5d' }
-  )
-
+  const token = await new jwt.SignJWT({ _id, email })
+                      .setProtectedHeader({ alg: 'HS256' })
+                      .setExpirationTime('48h')
+                      .sign( new TextEncoder().encode(process.env.JWT_SECRET_SEED) )
+  return token
 }
 
-export const isValidToken = ( token: string ): Promise<string> => {
+export const isValidToken = async ( token: string ): Promise<string> => {
   if( !process.env.JWT_SECRET_SEED ){
     throw new Error("secret no found")
   }
-
-  return new Promise((resolve, reject) => {
-    try {
-      jwt.verify( token, process.env.JWT_SECRET_SEED || '', (err, payload) => {
-        if(err) reject('JWT inválido');
-        const { _id } = payload as { _id: string }
-        resolve(_id)
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
+  try {
+    const { payload } = await jwt.jwtVerify( token, new TextEncoder().encode(process.env.JWT_SECRET_SEED) );
+    return `${payload._id}`;
+  } catch (error) {
+    return 'Token no válido';
+  }
 }

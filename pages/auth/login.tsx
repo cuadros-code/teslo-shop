@@ -26,7 +26,8 @@ const LoginPage = () => {
     setShowErr(isLogin === false);
     setTimeout(() => setShowErr(false), 3000);
 
-    if(isLogin) router.replace('/');
+    const destination = router.query.p?.toString() || '/'
+    if(isLogin) router.replace(destination);
   }
 
   return (
@@ -90,7 +91,7 @@ const LoginPage = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <NextLink href='/auth/register' passHref>
+              <NextLink href={`/auth/register?p=${router.query.p?.toString()}`} passHref>
                 <Link underline='always' >
                   No tienes una cuenta?
                 </Link>

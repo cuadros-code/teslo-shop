@@ -68,11 +68,11 @@ async function registerUser(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     const { _id, role} = newUser;
 
-    const token = signToken( _id, email )
+    const newToken = await signToken( _id, email );
 
     return res.status(200).json({ 
       message: 'OK',
-      token: token,
+      token: newToken,
       user: {
         email,
         name,

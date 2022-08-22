@@ -22,16 +22,12 @@ export const ItemCounter: FC<IProps> = ({ currentValue, maxValue, updatedQuantit
 
   return (
     <Box display='flex' alignItems='center' >
-      <IconButton>
-        <RemoveCircleOutline 
-          onClick={subtractQuantity}
-        />
+      <IconButton onClick={subtractQuantity}>
+        <RemoveCircleOutline />
       </IconButton>
       <Typography sx={{ width: 40, textAlign: 'center' }} >{currentValue}</Typography>
-      <IconButton>
-        <AddCircleOutline 
-          onClick={addQuantity}
-        />
+      <IconButton onClick={addQuantity}>
+        <AddCircleOutline />
       </IconButton>
     </Box>
   )
