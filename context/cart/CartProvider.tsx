@@ -3,23 +3,37 @@ import React, { useEffect, useReducer } from 'react'
 import { CartContext } from './CartContext'
 import { cartReducer } from './cartReducer'
 import Cookie from 'js-cookie'
+import Cookies from 'js-cookie'
 
+export interface ShippingAddress {
+  name        : string
+  lastname    : string
+  address1    : string
+  address2   ?: string
+  zipCode     : string
+  city        : string
+  country     : string
+  phoneNumber : string
+}
 export interface CartState {
-  isLoaded: boolean
-  cart: ICartProduct[]
-  numberOfItems: number
-  subTotal: number
-  tax: number
-  total: number
+  isLoaded        : boolean
+  cart            : ICartProduct[]
+  numberOfItems   : number
+  subTotal        : number
+  tax             : number
+  total           : number
+  shippingAddress?: ShippingAddress
 }
 
+
 const CART_STATE_INITIAL: CartState = {
-  cart: Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [],
-  numberOfItems: 0,
-  subTotal: 0,
-  tax: 0,
-  total: 0,
-  isLoaded: false,
+  cart            : Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [],
+  numberOfItems   : 0,
+  subTotal        : 0,
+  tax             : 0,
+  total           : 0,
+  isLoaded        : false,
+  shippingAddress : undefined
 }
 
 export const CartProvider = ({children}: {children: React.ReactNode}) => {
@@ -29,6 +43,24 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     Cookie.set('cart', JSON.stringify(state.cart))
   }, [state.cart])
+
+  useEffect(() => {
+
+    dispatch({
+      type: '[CART] - Address from cookies',
+      payload: {
+        name        : Cookies.get('name')         || '',
+        lastname    : Cookies.get('lastname')     || '',
+        address1    : Cookies.get('address1')     || '',
+        address2    : Cookies.get('address2')     || '',
+        zipCode     : Cookies.get('zipCode')      || '',
+        city        : Cookies.get('city')         || '',
+        country     : Cookies.get('country')      || '',
+        phoneNumber : Cookies.get('phoneNumber')  || '',
+      }
+    })
+    
+  }, [])
 
   useEffect(() => {
     const numberOfItems = state.cart.reduce( (acc, el) =>  el.quantity + acc , 0)
@@ -86,13 +118,21 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
     })
   }
 
+  const updateAddress = ( address: ShippingAddress   ) => {
+    dispatch({
+      type: '[CART] - Update Address',
+      payload: address
+    })
+  }
+
   return (
     <CartContext.Provider 
       value={{
         ...state,
         addProductToCart,
         updateCartQuantity,
-        deleteCartProduct
+        deleteCartProduct,
+        updateAddress
       }}
     >
       {children}
