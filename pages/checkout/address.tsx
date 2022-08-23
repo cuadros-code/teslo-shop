@@ -137,7 +137,7 @@ const AddressPage = () => {
               <TextField
                 select
                 label='País'
-                defaultValue={"COL"}
+                defaultValue={Cookies.get('country') || "COL"}
                 variant='filled'
                 error={!!errors.country}
                 helperText={errors.country?.message}
