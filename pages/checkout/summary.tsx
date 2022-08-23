@@ -2,8 +2,13 @@ import { ShopLayout } from "components/layouts"
 import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from '@mui/material'
 import { CartList, OrdenSummary } from "components/cart"
 import NextLink from 'next/link'
+import { useContext } from "react"
+import { CartContext } from "context/cart/CartContext"
 
 const SummaryCheckout = () => {
+
+  const { shippingAddress, numberOfItems } = useContext(CartContext)
+
   return (
     <ShopLayout
       title='Revisar pedido - Checkout'
@@ -17,7 +22,7 @@ const SummaryCheckout = () => {
         <Grid item xs={12} sm={5}>
           <Card className='summary-card'>
             <CardContent>
-              <Typography variant='h2' component='h3'>Resumen (3 productos)</Typography>
+              <Typography variant='h2' component='h3'>Resumen ({numberOfItems}  {numberOfItems > 1 ? 'productos' : 'producto'})</Typography>
               <Divider sx={{ my: 1 }} /> 
               
               <Box display='flex' justifyContent='space-between' alignItems='center'>
@@ -29,12 +34,11 @@ const SummaryCheckout = () => {
                 </NextLink>
               </Box>
               
-              <Typography >Kevin Cuadros</Typography>
-              <Typography >Calle 10 2#23</Typography>
-              <Typography >El molino</Typography>
-              <Typography >763912</Typography>
-              <Typography >Colombia</Typography>
-              <Typography >+57 3178237572</Typography>
+              <Typography > {shippingAddress?.name} {shippingAddress?.lastname}</Typography>
+              <Typography > {shippingAddress?.address1}</Typography>
+              <Typography > {shippingAddress?.city} {shippingAddress?.zipCode}</Typography>
+              <Typography > {shippingAddress?.country}</Typography>
+              <Typography > {shippingAddress?.phoneNumber}</Typography>
 
               <Divider sx={{ my: 1 }} /> 
 

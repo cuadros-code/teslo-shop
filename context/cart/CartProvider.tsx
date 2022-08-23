@@ -119,6 +119,14 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
   }
 
   const updateAddress = ( address: ShippingAddress   ) => {
+    Cookies.set('name', address.name)
+    Cookies.set('lastname', address.lastname)
+    Cookies.set('address1', address.address1)
+    Cookies.set('address2', address.address2 || '')
+    Cookies.set('zipCode', address.zipCode)
+    Cookies.set('city', address.city)
+    Cookies.set('country', address.country)
+    Cookies.set('phoneNumber', address.phoneNumber)
     dispatch({
       type: '[CART] - Update Address',
       payload: address

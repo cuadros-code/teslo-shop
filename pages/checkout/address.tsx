@@ -41,14 +41,6 @@ const AddressPage = () => {
   })
 
   const onSubmit: SubmitHandler<FormData> = ( data ) => {
-    Cookies.set('name', data.name)
-    Cookies.set('lastname', data.lastname)
-    Cookies.set('address1', data.address1)
-    Cookies.set('address2', data.address2 || '')
-    Cookies.set('zipCode', data.zipCode)
-    Cookies.set('city', data.city)
-    Cookies.set('country', data.country)
-    Cookies.set('phoneNumber', data.phoneNumber)
     updateAddress(data)
     router.push('/checkout/summary')
   }
